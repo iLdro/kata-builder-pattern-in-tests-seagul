@@ -27,28 +27,18 @@ class UserBuilder {
         return this;
     }
 
-    withAge(major) {
-        if(major){
-            this.age = 30;
-        }
-        else{
-            this.age = 17;
-        }
+    withMinor() {
+        this.age = 17;
         return this;
     }
 
-    withForeign(foreign) {
-       if(foreign){
-           this.address = parisAddress;
-       }
-         else{
-              this.address = fsfAddress;
-         }
+    withForeign() {
+        this.address = parisAddress;
         return this;
     }
 
-    withVerified(verified) {
-        this.verified = verified;
+    withUnVerified() {
+        this.verified = false;
         return this;
     }
 
@@ -73,14 +63,14 @@ test('happy path', t => {
 })
 
 test('minor users cannot order from the shop', t => {
-    const user = new UserBuilder().withAge(false).build()
+    const user = new UserBuilder().withMinor().build()
 
     t.false(Shop.canOrder(user))
     t.end()
 })
 
 test('must be a verified user to order from the shop', t => {
-    const user = new UserBuilder().withVerified(false).build()
+    const user = new UserBuilder().withUnVerified().build()
 
     t.false(Shop.canOrder(user))
     t.end()
@@ -88,14 +78,14 @@ test('must be a verified user to order from the shop', t => {
 
 //The user was a minor so the condition for the verified check was never run
 test('must be a verified and not a minor user to order from the shop', t => {
-    const user = new UserBuilder().withAge(true).withVerified(false).build()
+    const user = new UserBuilder().withMinor().withUnVerified().build()
 
     t.false(Shop.canOrder(user))
     t.end()
 })
 
 test('foreigners must pay foreign fee', t => {
-    const user = new UserBuilder().withForeign(true).build()
+    const user = new UserBuilder().withForeign().build()
     t.true(Shop.mustPayForeignFee(user))
     t.end()
 })
