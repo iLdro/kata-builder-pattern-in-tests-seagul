@@ -27,8 +27,13 @@ class UserBuilder {
         return this;
     }
 
-    withAge(age) {
-        this.age = age;
+    withAge(major) {
+        if(major){
+            this.age = 30;
+        }
+        else{
+            this.age = 17;
+        }
         return this;
     }
 
@@ -63,7 +68,7 @@ test('happy path', t => {
 })
 
 test('minor users cannot order from the shop', t => {
-    const user = new UserBuilder().withAge(17).build()
+    const user = new UserBuilder().withAge(false).build()
 
     t.false(Shop.canOrder(user))
     t.end()
@@ -78,7 +83,7 @@ test('must be a verified user to order from the shop', t => {
 
 //The user was a minor so the condition for the verified check was never run
 test('must be a verified and not a minor user to order from the shop', t => {
-    const user = new UserBuilder().withAge(17).withVerified(false).build()
+    const user = new UserBuilder().withAge(true).withVerified(false).build()
 
     t.false(Shop.canOrder(user))
     t.end()
