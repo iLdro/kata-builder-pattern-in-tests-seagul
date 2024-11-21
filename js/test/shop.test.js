@@ -37,8 +37,13 @@ class UserBuilder {
         return this;
     }
 
-    withAddress(address) {
-        this.address = address;
+    withForeign(foreign) {
+       if(foreign){
+           this.address = parisAddress;
+       }
+         else{
+              this.address = fsfAddress;
+         }
         return this;
     }
 
@@ -90,7 +95,7 @@ test('must be a verified and not a minor user to order from the shop', t => {
 })
 
 test('foreigners must pay foreign fee', t => {
-    const user = new UserBuilder().withAddress(parisAddress).build()
+    const user = new UserBuilder().withForeign(true).build()
     t.true(Shop.mustPayForeignFee(user))
     t.end()
 })
