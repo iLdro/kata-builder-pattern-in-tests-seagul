@@ -5,7 +5,9 @@ class Shop {
         }
 
         if (!user.verified) {
-            return true
+            //  Old line : return true || this line should return false => A user can order only if he is verified
+            return false
+
         }
 
         return true
